@@ -75,14 +75,9 @@ export default function VideoStream() {
       {!embedUrl && (
         <div className="w-full bg-gray-100 rounded-lg shadow-lg" style={{ paddingBottom: '56.25%', position: 'relative' }}>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 px-4">
-            <div className="text-center flex flex-col items-center" style={{ paddingTop: '10%' }}>
-              <p className="text-base sm:text-lg font-medium text-gray-600 mb-4 sm:mb-6">
-                Enter a stream URL above to start
-              </p>
-              <svg className="h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-            </div>
+            <p className="text-base sm:text-lg font-medium text-gray-600">
+              Enter a stream URL above to start
+            </p>
           </div>
         </div>
       )}

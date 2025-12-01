@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import API_BASE_URL from '../config/api';
 
 export default function Quiz() {
   const [mode, setMode] = useState('teacher'); // 'teacher' or 'student'
@@ -14,43 +15,99 @@ export default function Quiz() {
   const [options, setOptions] = useState(['', '', '', '']);
   const [correctAnswer, setCorrectAnswer] = useState('');
 
-  useEffect(() => {
-    // Load questions from localStorage
-    const saved = localStorage.getItem('quiz-questions');
-    if (saved) {
-      setQuestions(JSON.parse(saved));
+  // Load questions from API
+  const loadQuestions = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/questions`);
+      if (response.ok) {
+        const data = await response.json();
+        setQuestions(data);
+      }
+    } catch (error) {
+      console.error('Error loading questions:', error);
     }
-  }, []);
-
-  const saveQuestions = (newQuestions) => {
-    localStorage.setItem('quiz-questions', JSON.stringify(newQuestions));
-    setQuestions(newQuestions);
   };
 
-  const addQuestion = (e) => {
+  // Load current question from API (for students)
+  const loadCurrentQuestion = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/current`);
+      if (response.ok) {
+        const data = await response.json();
+        setCurrentQuestion(data);
+      }
+    } catch (error) {
+      console.error('Error loading current question:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadQuestions();
+    
+    // Poll for current question in student mode
+    if (mode === 'student') {
+      loadCurrentQuestion();
+      const interval = setInterval(loadCurrentQuestion, 2000); // Poll every 2 seconds
+      return () => clearInterval(interval);
+    }
+  }, [mode]);
+
+  const addQuestion = async (e) => {
     e.preventDefault();
     const newQuestion = {
-      id: Date.now(),
       text: questionText,
       type: questionType,
       options: questionType === 'multiple-choice' ? options.filter(o => o.trim()) : ['True', 'False'],
       correctAnswer,
     };
-    saveQuestions([...questions, newQuestion]);
-    
-    // Reset form
-    setQuestionText('');
-    setOptions(['', '', '', '']);
-    setCorrectAnswer('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/questions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newQuestion),
+      });
+
+      if (response.ok) {
+        await loadQuestions();
+        // Reset form
+        setQuestionText('');
+        setOptions(['', '', '', '']);
+        setCorrectAnswer('');
+      }
+    } catch (error) {
+      console.error('Error adding question:', error);
+    }
   };
 
-  const deleteQuestion = (id) => {
-    saveQuestions(questions.filter(q => q.id !== id));
+  const deleteQuestion = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/questions/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        await loadQuestions();
+      }
+    } catch (error) {
+      console.error('Error deleting question:', error);
+    }
   };
 
-  const askQuestion = (question) => {
-    setCurrentQuestion(question);
-    setStudentAnswer('');
+  const askQuestion = async (question) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quiz/current`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(question),
+      });
+
+      if (response.ok) {
+        setCurrentQuestion(question);
+      }
+    } catch (error) {
+      console.error('Error setting current question:', error);
+    }
   };
 
   const submitAnswer = () => {
@@ -65,11 +122,11 @@ export default function Quiz() {
   return (
     <div className="w-full h-full">
       {/* Mode Toggle */}
-      <div className="bg-white p-4 rounded-lg shadow mb-4">
+      <div className="bg-white p-3 sm:p-4 rounded-lg shadow mb-4">
         <div className="flex gap-2">
           <button
             onClick={() => setMode('teacher')}
-            className={`px-4 py-2 rounded-md transition-colors ${
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-md transition-colors text-sm sm:text-base ${
               mode === 'teacher' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -77,7 +134,7 @@ export default function Quiz() {
           </button>
           <button
             onClick={() => setMode('student')}
-            className={`px-4 py-2 rounded-md transition-colors ${
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-md transition-colors text-sm sm:text-base ${
               mode === 'student' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }`}
           >
@@ -90,8 +147,8 @@ export default function Quiz() {
       {mode === 'teacher' && (
         <div className="space-y-4">
           {/* Add Question Form */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-4">Create New Question</h3>
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+            <h3 className="text-base sm:text-lg font-semibold mb-4">Create New Question</h3>
             <form onSubmit={addQuestion} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Question Type</label>
@@ -175,28 +232,28 @@ export default function Quiz() {
           </div>
 
           {/* Question List */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-4">Questions ({questions.length})</h3>
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+            <h3 className="text-base sm:text-lg font-semibold mb-4">Questions ({questions.length})</h3>
             <div className="space-y-3">
               {questions.map((q) => (
-                <div key={q.id} className="border border-gray-200 rounded-md p-4">
-                  <div className="flex justify-between items-start">
+                <div key={q.id} className="border border-gray-200 rounded-md p-3 sm:p-4">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                     <div className="flex-1">
-                      <p className="font-medium">{q.text}</p>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="font-medium text-sm sm:text-base">{q.text}</p>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1">
                         Type: {q.type} | Answer: {q.correctAnswer}
                       </p>
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => askQuestion(q)}
-                        className="px-3 py-1 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 transition-colors"
+                        className="flex-1 sm:flex-none px-3 py-1 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 transition-colors"
                       >
                         Ask
                       </button>
                       <button
                         onClick={() => deleteQuestion(q.id)}
-                        className="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 transition-colors"
+                        className="flex-1 sm:flex-none px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 transition-colors"
                       >
                         Delete
                       </button>
@@ -205,7 +262,7 @@ export default function Quiz() {
                 </div>
               ))}
               {questions.length === 0 && (
-                <p className="text-gray-500 text-center py-8">No questions yet. Create one above!</p>
+                <p className="text-gray-500 text-center py-8 text-sm">No questions yet. Create one above!</p>
               )}
             </div>
           </div>
@@ -216,25 +273,25 @@ export default function Quiz() {
       {mode === 'student' && (
         <div className="space-y-4">
           {/* Score Display */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-2">Your Score</h3>
-            <p className="text-3xl font-bold text-blue-600">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+            <h3 className="text-base sm:text-lg font-semibold mb-2">Your Score</h3>
+            <p className="text-2xl sm:text-3xl font-bold text-blue-600">
               {score} / {answeredCount}
             </p>
           </div>
 
           {/* Current Question */}
           {currentQuestion ? (
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-4">Question</h3>
-              <p className="text-xl mb-6">{currentQuestion.text}</p>
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+              <h3 className="text-base sm:text-lg font-semibold mb-4">Question</h3>
+              <p className="text-lg sm:text-xl mb-6">{currentQuestion.text}</p>
               
               <div className="space-y-3">
                 {currentQuestion.options.map((option, index) => (
                   <button
                     key={index}
                     onClick={() => setStudentAnswer(option)}
-                    className={`w-full px-4 py-3 text-left rounded-md border-2 transition-colors ${
+                    className={`w-full px-4 py-3 text-left text-sm sm:text-base rounded-md border-2 transition-colors ${
                       studentAnswer === option
                         ? 'border-blue-600 bg-blue-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -254,12 +311,12 @@ export default function Quiz() {
               </button>
             </div>
           ) : (
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
               <div className="text-center text-gray-500 py-8">
-                <svg className="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p>Waiting for teacher to ask a question...</p>
+                <p className="text-sm sm:text-base">Waiting for teacher to ask a question...</p>
               </div>
             </div>
           )}
