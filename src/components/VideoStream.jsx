@@ -24,9 +24,9 @@ export default function VideoStream() {
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="mb-4 bg-white p-4 rounded-lg shadow">
-        <div className="flex gap-4 flex-wrap items-end">
-          <div className="flex-1 min-w-[200px]">
+      <form onSubmit={handleSubmit} className="mb-4 bg-white p-3 sm:p-4 rounded-lg shadow">
+        <div className="flex gap-3 sm:gap-4 flex-col sm:flex-row sm:items-end">
+          <div className="flex-1 min-w-0 sm:min-w-[200px]">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Stream Type
             </label>
@@ -39,7 +39,7 @@ export default function VideoStream() {
               <option value="discord">Discord</option>
             </select>
           </div>
-          <div className="flex-[2] min-w-[300px]">
+          <div className="flex-[2] min-w-0 sm:min-w-[300px]">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {streamType === 'youtube' ? 'YouTube URL or Video ID' : 'Discord Channel URL'}
             </label>
@@ -53,7 +53,7 @@ export default function VideoStream() {
           </div>
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
             Load Stream
           </button>
@@ -73,13 +73,15 @@ export default function VideoStream() {
       )}
 
       {!embedUrl && (
-        <div className="w-full bg-gray-100 rounded-lg shadow-lg flex items-center justify-center" style={{ paddingBottom: '56.25%', position: 'relative' }}>
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-            <div className="text-center">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="w-full bg-gray-100 rounded-lg shadow-lg" style={{ paddingBottom: '56.25%', position: 'relative' }}>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 px-4">
+            <div className="text-center flex flex-col items-center" style={{ paddingTop: '10%' }}>
+              <p className="text-base sm:text-lg font-medium text-gray-600 mb-4 sm:mb-6">
+                Enter a stream URL above to start
+              </p>
+              <svg className="h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              <p className="mt-2">Enter a stream URL above to start</p>
             </div>
           </div>
         </div>
