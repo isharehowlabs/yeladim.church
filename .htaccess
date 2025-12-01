@@ -3,10 +3,17 @@ AddType application/javascript .js .mjs
 AddType text/css .css
 AddType image/svg+xml .svg
 
-# Enable mod_rewrite for React Router
+# Enable mod_rewrite for React Router and API proxy
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  
+  # Proxy API requests to backend using RewriteRule
+  RewriteCond %{REQUEST_URI} ^/api/ [OR]
+  RewriteCond %{REQUEST_URI} ^/health$
+  RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]
+  
+  # React Router support
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
