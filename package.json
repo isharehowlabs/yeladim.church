@@ -8,7 +8,8 @@
     "build": "rm -rf dist && npx tailwindcss -i src/index.css -o src/index.generated.css --minify && vite build && cp src/index.generated.css dist/assets/ && node fix-css-ref.js",
     "build:clean": "rm -rf dist node_modules/.vite && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "./deploy.sh"
   },
   "dependencies": {
     "react": "^19.2.0",

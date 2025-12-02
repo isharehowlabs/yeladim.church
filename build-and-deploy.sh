@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build and Deploy Script
-# Clears old build files, builds new ones, then handles git operations
+# Clears old build files, builds new ones, deploys to server, then handles git operations
 
 set -e  # Exit on error
 
@@ -9,14 +9,20 @@ echo "🚀 Build and Deploy Script"
 echo "=========================="
 echo ""
 
-# Step 1: Clear old build files
-echo "🧹 Clearing old build files..."
+# Step 1: Clear old build cache
+echo "🧹 Clearing build cache..."
 rm -rf dist
 rm -rf node_modules/.vite
-echo "✅ Old build files cleared"
+echo "✅ Build cache cleared"
 echo ""
 
-# Step 2: Build new files
+# Step 2: Clear old deployed files in assets directory
+echo "🧹 Clearing old deployed assets..."
+rm -f assets/*.js assets/*.css 2>/dev/null
+echo "✅ Old deployed assets cleared"
+echo ""
+
+# Step 3: Build new files
 echo "🔨 Building new files..."
 npm run build
 
@@ -28,7 +34,24 @@ fi
 echo "✅ Build successful!"
 echo ""
 
-# Step 3: Git operations
+# Step 4: Deploy to web server
+echo "📦 Deploying to web server..."
+cp -r dist/assets/* assets/ 2>/dev/null
+cp dist/index.html . 2>/dev/null
+
+# Fix ownership and permissions
+echo "🔒 Setting permissions..."
+chown -R ishaglcy:ishaglcy index.html assets .htaccess 2>/dev/null
+chmod 644 index.html .htaccess 2>/dev/null
+chmod 755 assets 2>/dev/null
+chmod 644 assets/* 2>/dev/null
+
+echo "✅ Deployment complete!"
+echo ""
+echo "🌐 Your app is now live at: https://yeladim.church"
+echo ""
+
+# Step 5: Git operations
 echo "📝 Git operations..."
 echo ""
 
@@ -60,7 +83,7 @@ else
     echo ""
 fi
 
-# Step 4: Push to remote
+# Step 6: Push to remote
 echo "📤 Pushing to remote..."
 if git remote | grep -q "origin"; then
     git push origin main
@@ -78,6 +101,6 @@ fi
 echo ""
 echo "🎉 Build and deploy process complete!"
 echo ""
-echo "📁 Build files are in ./dist directory"
-echo "🌐 Ready for deployment"
-
+echo "📁 Deployed files:"
+echo "   - index.html (root)"
+echo "   - assets/ ($(ls -1 assets/*.js assets/*.css 2>/dev/null | wc -l) files)"

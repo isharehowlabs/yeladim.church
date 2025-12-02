@@ -72,7 +72,7 @@ export default function VideoStream() {
           </div>
           <button
             type="submit"
-            className="w-full md:w-auto px-4 md:px-5 py-1.5 md:py-2 text-sm md:text-base bg-gradient-to-r from-purple-600 to-yellow-600 text-white rounded-md hover:from-purple-700 hover:to-yellow-700 transition-all shadow-md hover:shadow-lg font-semibold"
+            className="w-full md:w-auto px-4 md:px-5 py-1.5 md:py-2 text-sm md:text-base bg-gradient-to-r from-purple-600 to-yellow-600 text-white rounded-md hover:from-purple-700 hover:to-yellow-700 transition-all shadow-md hover:shadow-lg font-semibold whitespace-nowrap"
           >
             Load Stream
           </button>
@@ -81,19 +81,21 @@ export default function VideoStream() {
 
       {/* Video Embed Section */}
       {embedUrl ? (
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-          <iframe
-            src={embedUrl}
-            className="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg border-2 border-purple-200"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Stream Video"
-          />
+        <div className="w-full">
+          <div className="relative w-full aspect-video">
+            <iframe
+              src={embedUrl}
+              className="absolute inset-0 w-full h-full rounded-lg shadow-lg border-2 border-purple-200"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Stream Video"
+            />
+          </div>
         </div>
       ) : (
-        <div className="video-stream-placeholder relative w-full bg-gradient-to-br from-purple-100 to-yellow-100 rounded-lg shadow-lg border-2 border-purple-200 flex items-center justify-center" style={{ paddingBottom: '56.25%' }}>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-gray-600 text-sm md:text-base font-medium">Waiting for video link...</p>
+        <div className="w-full">
+          <div className="video-stream-placeholder relative w-full aspect-video bg-gradient-to-br from-purple-100 to-yellow-100 rounded-lg shadow-lg border-2 border-purple-200 flex items-center justify-center">
+            <p className="text-gray-600 text-sm md:text-base font-medium px-4 text-center">Waiting for video link...</p>
           </div>
         </div>
       )}
