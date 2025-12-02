@@ -142,59 +142,59 @@ export default function ScriptureNotebook() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col lg:flex-row gap-4">
+    <div className="w-full h-full flex flex-col lg:flex-row gap-4 md:gap-6">
       {/* Note Editor */}
-      <div className="flex-1 bg-white p-4 sm:p-6 rounded-lg shadow">
-        <h3 className="text-base sm:text-lg font-semibold mb-4">
+      <div className="flex-1 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow">
+        <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 md:mb-6">
           {currentNote ? 'Edit Lesson' : 'New Lesson'}
         </h3>
         
-        <div className="space-y-4">
+        <div className="space-y-4 md:space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Lesson Title</label>
+            <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">Lesson Title</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter lesson title..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Scripture Reference</label>
+            <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">Scripture Reference</label>
             <input
               type="text"
               value={verse}
               onChange={(e) => setVerse(e.target.value)}
               placeholder="e.g., John 3:16"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Lesson Notes</label>
+            <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">Lesson Notes</label>
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows="10"
               placeholder="Write your lesson notes here..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 md:gap-3">
             {currentNote ? (
               <>
                 <button
                   onClick={updateNote}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base"
+                  className="flex-1 px-4 py-2 md:py-3 text-sm md:text-base bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-semibold"
                 >
                   Update Lesson
                 </button>
                 <button
                   onClick={resetForm}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors text-sm sm:text-base"
+                  className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors font-semibold"
                 >
                   Cancel
                 </button>
@@ -203,7 +203,7 @@ export default function ScriptureNotebook() {
               <button
                 onClick={createNote}
                 disabled={!content.trim()}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-sm sm:text-base"
+                className="flex-1 px-4 py-2 md:py-3 text-sm md:text-base bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed font-semibold"
               >
                 Save Lesson
               </button>
@@ -213,44 +213,44 @@ export default function ScriptureNotebook() {
       </div>
 
       {/* Notes List */}
-      <div className="lg:w-80 bg-white p-4 sm:p-6 rounded-lg shadow overflow-y-auto max-h-[600px]">
-        <h3 className="text-base sm:text-lg font-semibold mb-4">Saved Lessons ({notes.length})</h3>
+      <div className="lg:w-80 xl:w-96 bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow overflow-y-auto max-h-[600px] md:max-h-[700px]">
+        <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 md:mb-6">Saved Lessons ({notes.length})</h3>
         
-        <div className="space-y-3">
+        <div className="space-y-3 md:space-y-4">
           {notes.map((note) => (
-            <div key={note.id} className="border border-gray-200 rounded-md p-3 hover:border-blue-300 transition-colors">
-              <h4 className="font-medium text-gray-900 mb-1 text-sm sm:text-base">{note.title}</h4>
+            <div key={note.id} className="border border-gray-200 rounded-md p-3 md:p-4 hover:border-blue-300 transition-colors">
+              <h4 className="font-medium text-gray-900 mb-1 text-sm sm:text-base md:text-lg">{note.title}</h4>
               {note.verse && (
-                <p className="text-xs sm:text-sm text-blue-600 mb-2">{note.verse}</p>
+                <p className="text-xs sm:text-sm md:text-base text-blue-600 mb-2">{note.verse}</p>
               )}
-              <p className="text-xs text-gray-500 mb-3">
+              <p className="text-xs md:text-sm text-gray-500 mb-3">
                 {new Date(note.updatedAt).toLocaleDateString()}
               </p>
               
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => editNote(note)}
-                  className="flex-1 min-w-[60px] px-2 py-1 bg-blue-600 text-white text-xs sm:text-sm rounded hover:bg-blue-700 transition-colors"
+                  className="flex-1 min-w-[60px] px-2 md:px-3 py-1 md:py-2 bg-blue-600 text-white text-xs sm:text-sm md:text-base rounded hover:bg-blue-700 transition-colors font-semibold"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => exportNote(note)}
-                  className="px-2 py-1 bg-green-600 text-white text-xs sm:text-sm rounded hover:bg-green-700 transition-colors"
+                  className="px-2 md:px-3 py-1 md:py-2 bg-green-600 text-white text-xs sm:text-sm md:text-base rounded hover:bg-green-700 transition-colors"
                   title="Export"
                 >
                   📥
                 </button>
                 <button
                   onClick={() => printNote(note)}
-                  className="px-2 py-1 bg-purple-600 text-white text-xs sm:text-sm rounded hover:bg-purple-700 transition-colors"
+                  className="px-2 md:px-3 py-1 md:py-2 bg-purple-600 text-white text-xs sm:text-sm md:text-base rounded hover:bg-purple-700 transition-colors"
                   title="Print"
                 >
                   🖨️
                 </button>
                 <button
                   onClick={() => deleteNote(note.id)}
-                  className="px-2 py-1 bg-red-600 text-white text-xs sm:text-sm rounded hover:bg-red-700 transition-colors"
+                  className="px-2 md:px-3 py-1 md:py-2 bg-red-600 text-white text-xs sm:text-sm md:text-base rounded hover:bg-red-700 transition-colors"
                   title="Delete"
                 >
                   🗑️
@@ -260,7 +260,7 @@ export default function ScriptureNotebook() {
           ))}
           
           {notes.length === 0 && (
-            <p className="text-gray-500 text-center py-8 text-sm">
+            <p className="text-gray-500 text-center py-8 text-sm md:text-base">
               No lessons yet. Create your first one!
             </p>
           )}

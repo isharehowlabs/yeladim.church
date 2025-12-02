@@ -17,17 +17,17 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-pink-50 to-orange-50">
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-7xl">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 max-w-7xl">
         {/* Header */}
-        <header className="mb-4 sm:mb-6">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent mb-2">
+        <header className="mb-4 sm:mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-center bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent mb-2">
             Children's Church 🙏
           </h1>
-          <p className="text-sm sm:text-base text-center text-purple-700 font-medium">Watch, Learn, and Have Fun!</p>
+          <p className="text-sm sm:text-base md:text-lg text-center text-purple-700 font-medium">Watch, Learn, and Have Fun!</p>
         </header>
 
         {/* Video Stream Section */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-4 sm:mb-6 md:mb-8">
           <VideoStream />
         </div>
 
@@ -46,7 +46,7 @@ function App() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 py-3 sm:py-4 px-3 sm:px-6 text-center text-sm sm:text-base font-medium transition-all whitespace-nowrap ${
+                    className={`flex-1 py-3 sm:py-4 md:py-5 px-3 sm:px-6 md:px-8 text-center text-sm sm:text-base md:text-lg font-medium transition-all whitespace-nowrap ${
                       activeTab === tab.id
                         ? `border-b-4 ${tabColors.active}`
                         : `text-gray-500 ${tabColors.hover}`
@@ -60,13 +60,13 @@ function App() {
           </div>
 
           {/* Tab Content */}
-          <div className="p-3 sm:p-6" style={{ minHeight: '400px' }}>
+          <div className="p-3 sm:p-6 md:p-8" style={{ minHeight: '400px' }}>
             {ActiveComponent && <ActiveComponent />}
           </div>
         </div>
 
         {/* Footer */}
-        <footer className="mt-6 sm:mt-8 text-center text-purple-600 text-xs sm:text-sm font-medium">
+        <footer className="mt-6 sm:mt-8 md:mt-10 text-center text-purple-600 text-xs sm:text-sm md:text-base font-medium">
           <p>Made with ❤️ for Yeladim Church</p>
         </footer>
       </div>
