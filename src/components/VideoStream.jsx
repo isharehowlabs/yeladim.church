@@ -34,7 +34,7 @@ export default function VideoStream() {
               type="text"
               value={streamUrl}
               onChange={(e) => setStreamUrl(e.target.value)}
-              placeholder={streamType === 'youtube' ? 'Enter YouTube URL' : 'Enter Discord URL'}
+              placeholder={streamType === 'youtube' ? 'Enter YouTube URL here to stream' : 'Enter Discord URL here to stream'}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
