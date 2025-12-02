@@ -29,6 +29,13 @@ Thumbs.db
 *.swp
 *~
 
+# Backup files
+*.old
+*.bak
+*.backup
+*~
+*.orig
+
 # Don't include built assets in root (they're in dist/)
 /assets/
 /index.html

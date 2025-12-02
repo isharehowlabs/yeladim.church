@@ -73,9 +73,21 @@ export default function VideoStream() {
       )}
 
       {!embedUrl && (
-        <div className="w-full bg-gray-100 rounded-lg shadow-lg" style={{ paddingBottom: '56.25%', position: 'relative' }}>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-gray-700 text-center px-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold animate-attention">
+        <div className="w-full bg-gray-100 rounded-lg shadow-lg video-stream-placeholder" style={{ paddingBottom: '56.25%', position: 'relative' }}>
+          <div 
+            className="absolute inset-0 flex items-center justify-center" 
+            style={{ 
+              backgroundImage: 'none',
+            }}
+          >
+            <p 
+              className="text-gray-700 text-center px-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold animate-attention"
+              style={{
+                backgroundImage: 'none',
+                position: 'relative',
+                zIndex: 10,
+              }}
+            >
               Enter stream URL above
             </p>
           </div>
