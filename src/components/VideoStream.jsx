@@ -3,23 +3,10 @@ import { useState } from 'react';
 export default function VideoStream() {
   const [streamType, setStreamType] = useState('youtube');
   const [streamUrl, setStreamUrl] = useState('');
-  const [embedUrl, setEmbedUrl] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (streamType === 'youtube') {
-      let videoId = '';
-      if (streamUrl.includes('youtube.com/watch?v=')) {
-        videoId = streamUrl.split('v=')[1]?.split('&')[0];
-      } else if (streamUrl.includes('youtu.be/')) {
-        videoId = streamUrl.split('youtu.be/')[1]?.split('?')[0];
-      } else {
-        videoId = streamUrl;
-      }
-      setEmbedUrl(`https://www.youtube.com/embed/${videoId}`);
-    } else {
-      setEmbedUrl(streamUrl);
-    }
+    // Form submission handled here if needed
   };
 
   return (
@@ -59,40 +46,6 @@ export default function VideoStream() {
           </button>
         </div>
       </form>
-
-      {embedUrl && (
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-          <iframe
-            src={embedUrl}
-            className="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-      )}
-
-      {!embedUrl && (
-        <div className="w-full bg-gray-100 rounded-lg shadow-lg video-stream-placeholder" style={{ paddingBottom: '56.25%', position: 'relative' }}>
-          <div 
-            className="absolute inset-0 flex items-center justify-center" 
-            style={{ 
-              backgroundImage: 'none',
-            }}
-          >
-            <p 
-              className="text-gray-700 text-center px-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold animate-attention"
-              style={{
-                backgroundImage: 'none',
-                position: 'relative',
-                zIndex: 10,
-              }}
-            >
-              Enter stream URL above
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

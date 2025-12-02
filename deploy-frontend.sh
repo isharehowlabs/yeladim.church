@@ -2,7 +2,11 @@
 
 # Deploy script for Children's Church frontend
 
-echo "Building frontend..."
+echo "🧹 Clearing old build files..."
+rm -rf dist
+rm -rf node_modules/.vite
+
+echo "🔨 Building frontend..."
 npm run build
 
 echo "Copying files to document root..."

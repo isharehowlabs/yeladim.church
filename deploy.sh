@@ -1,7 +1,13 @@
 #!/bin/bash
 echo "🚀 Building and deploying Children's Church App..."
 
+# Clear old build files
+echo "🧹 Clearing old build files..."
+rm -rf dist
+rm -rf node_modules/.vite
+
 # Build the app
+echo "🔨 Building new files..."
 npm run build
 
 if [ $? -eq 0 ]; then
